@@ -49,11 +49,13 @@ class Sheet2JSON{
 
         // get sheetname
         $sheetname = $args['value'];
+        // $file = plugin_dir_path(__DIR__) . 'Configure.xlsx';
 
         // start reader
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         $reader->setLoadSheetsOnly($sheetname);
-        $spreadsheet = $reader->load($user_spreadsheet);
+        
+        $spreadsheet = $reader->load($attached_file);
         $spreadsheet_data = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
         
         $object = $this->convert($spreadsheet_data);
@@ -64,6 +66,7 @@ class Sheet2JSON{
      * Convert url path to file path
      * eg. http://localhost/wp-content/uploads/test.png
      * to  /var/www/html/wp-content/uploads/test.png
+     * @return String of absolute file path
      */
     public function url2path($url){
         $file_path = explode('/wp-content', $url)[1];

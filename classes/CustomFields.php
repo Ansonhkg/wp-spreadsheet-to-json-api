@@ -54,10 +54,10 @@ class CustomFields{
             'fields' => array(
                 array(
                     'key' => 'field_5ea0c250f7078',
-                    'label' => 'spreadsheet',
+                    'label' => '',
                     'name' => 'spreadsheet',
                     'type' => 'file',
-                    'instructions' => '',
+                    'instructions' => 'API: ' . get_home_url() . '/wp-json/sheet2json/YOUR_SHEET_NAME',
                     'required' => 0,
                     'conditional_logic' => 0,
                     'wrapper' => array(
