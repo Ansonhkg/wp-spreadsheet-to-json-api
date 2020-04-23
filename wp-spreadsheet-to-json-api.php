@@ -11,8 +11,9 @@
  */
  
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
-$protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,strpos( $_SERVER["SERVER_PROTOCOL"],'/'))).'://';
-define('SITE_URL', $protocol . $_SERVER['SERVER_NAME']);
+
 include(plugin_dir_path(__FILE__) . "/classes/Sheet2JSON.php");
+include(plugin_dir_path(__FILE__) . "/classes/CustomFields.php");
 
 new Sheet2JSON();
+new CustomFields();

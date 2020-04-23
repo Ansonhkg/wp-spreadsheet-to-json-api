@@ -1,7 +1,5 @@
 <?php
-// require(plugin_dir_path(__FILE__) . "php-excel-reader/excel_reader2.php");
-// require(plugin_dir_path(__FILE__) . "SpreadsheetReader.php");
-require_once("vendor/autoload.php"); 
+require_once("PhpSpreadsheet/vendor/autoload.php"); 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -41,17 +39,36 @@ class Sheet2JSON{
      * @return JSON spreadsheet object
      */
     public function api_get_spreadsheet($args){
-        $sheetname = $args['value'];
-        $file = plugin_dir_path(__DIR__) . 'configure.xlsx';
 
-        // return $file;
+        // check if spreadsheet is provided in the backend
+        $attached_file = get_field('spreadsheet', 'option');
+
+        if(!$attached_file) return 'Spreadsheet is not provided.';
+
+        $attached_file = $this->url2path($attached_file['url']);
+
+        // get sheetname
+        $sheetname = $args['value'];
+
+        // start reader
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         $reader->setLoadSheetsOnly($sheetname);
-        $spreadsheet = $reader->load($file);
+        $spreadsheet = $reader->load($user_spreadsheet);
         $spreadsheet_data = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
         
         $object = $this->convert($spreadsheet_data);
         return $object;
+    }
+
+    /**
+     * Convert url path to file path
+     * eg. http://localhost/wp-content/uploads/test.png
+     * to  /var/www/html/wp-content/uploads/test.png
+     */
+    public function url2path($url){
+        $file_path = explode('/wp-content', $url)[1];
+        $file_path_dir = ABSPATH . 'wp-content' . $file_path;
+        return $file_path_dir;
     }
 
     /**
