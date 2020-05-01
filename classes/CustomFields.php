@@ -13,7 +13,7 @@ class CustomFields{
      */
     public function __construct(){
         $this->init_options();
-        add_filter('acf/settings/show_admin', array($this, 'ACF_hide_admin'));
+        // add_filter('acf/settings/show_admin', array($this, 'ACF_hide_admin'));
         $this->fields_spreadsheet();
     }
 
@@ -80,13 +80,13 @@ class CustomFields{
                         'value' => 'acf-options-spreadsheet-api',
                     ),
                 ),
-                array(
-                    array(
-                        'param' => 'current_user_role',
-                        'operator' => '==',
-                        'value' => 'administrator',
-                    ),
-                ),
+                // array(
+                //     array(
+                //         'param' => 'current_user_role',
+                //         'operator' => '==',
+                //         'value' => 'administrator',
+                //     ),
+                // ),
             ),
             'menu_order' => 0,
             'position' => 'normal',
