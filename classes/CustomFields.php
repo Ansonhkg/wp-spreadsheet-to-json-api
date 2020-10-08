@@ -57,7 +57,7 @@ class CustomFields{
                     'label' => '',
                     'name' => 'spreadsheet',
                     'type' => 'file',
-                    'instructions' => 'API: ' . get_home_url() . '/wp-json/sheet2json/data',
+                    'instructions' => get_home_url() . '/wp-json/sheet2json/{TAB NAME AT THE BOTTOM OF YOUR SPREADSHEET}',
                     'required' => 0,
                     'conditional_logic' => 0,
                     'wrapper' => array(

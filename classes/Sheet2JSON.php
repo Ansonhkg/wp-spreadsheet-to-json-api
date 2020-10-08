@@ -43,7 +43,7 @@ class Sheet2JSON{
 
         register_rest_route(
             'sheet2json',
-            'data',
+            '/(?P<value>.+)/',
             $args
         );
     }
@@ -52,25 +52,28 @@ class Sheet2JSON{
      * API callback:: get spreadsheet JSON object
      * @return JSON spreadsheet object
      */
-    public function api_get_spreadsheet(){
+    public function api_get_spreadsheet($args){
 
         // check if spreadsheet is provided in the backend
         $attached_file = get_field('spreadsheet', 'option');
 
         if(!$attached_file) return 'Spreadsheet is not provided.';
 
-        $local_path = $this->url2path($attached_file['url']);
+        $attached_file = $this->url2path($attached_file['url']);
 
-        // $demo_path = plugin_dir_path(__DIR__) . 'Configure.xlsx';
+        // get sheetname
+        $sheetname = $args['value'];
+        // $file = plugin_dir_path(__DIR__) . 'Configure.xlsx';
 
-        // start php reader
+        // start reader
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-        $spreadsheet = $reader->load($local_path);
+        $reader->setLoadSheetsOnly($sheetname);
+        
+        $spreadsheet = $reader->load($attached_file);
         $spreadsheet_data = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
         
         $object = $this->convert($spreadsheet_data);
         return $object;
-    
     }
 
     /**
