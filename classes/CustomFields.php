@@ -57,7 +57,7 @@ class CustomFields{
                     'label' => '',
                     'name' => 'spreadsheet',
                     'type' => 'file',
-                    'instructions' => 'API: ' . get_home_url() . '/wp-json/sheet2json/YOUR_SHEET_NAME',
+                    'instructions' => 'API: ' . get_home_url() . '/wp-json/sheet2json/data',
                     'required' => 0,
                     'conditional_logic' => 0,
                     'wrapper' => array(
@@ -80,13 +80,6 @@ class CustomFields{
                         'value' => 'acf-options-spreadsheet-api',
                     ),
                 ),
-                // array(
-                //     array(
-                //         'param' => 'current_user_role',
-                //         'operator' => '==',
-                //         'value' => 'administrator',
-                //     ),
-                // ),
             ),
             'menu_order' => 0,
             'position' => 'normal',

@@ -3,6 +3,20 @@ require_once("PhpSpreadsheet/vendor/autoload.php");
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
+class S2JHelper{
+    
+    /**
+     * Sanitize arguments
+     * @param String value
+     * @return String
+     */
+    public function sanitize($value){
+        $value = str_replace('%20', ' ', $value);
+        $value = urldecode($value);
+        return $value;
+    }
+}
+
 class Sheet2JSON{
     public function __construct(){
         $this->init_APIs();
@@ -29,7 +43,7 @@ class Sheet2JSON{
 
         register_rest_route(
             'sheet2json',
-            '/(?P<value>.+)/',
+            'data',
             $args
         );
     }
@@ -38,28 +52,25 @@ class Sheet2JSON{
      * API callback:: get spreadsheet JSON object
      * @return JSON spreadsheet object
      */
-    public function api_get_spreadsheet($args){
+    public function api_get_spreadsheet(){
 
         // check if spreadsheet is provided in the backend
         $attached_file = get_field('spreadsheet', 'option');
 
         if(!$attached_file) return 'Spreadsheet is not provided.';
 
-        $attached_file = $this->url2path($attached_file['url']);
+        $local_path = $this->url2path($attached_file['url']);
 
-        // get sheetname
-        $sheetname = $args['value'];
-        // $file = plugin_dir_path(__DIR__) . 'Configure.xlsx';
+        // $demo_path = plugin_dir_path(__DIR__) . 'Configure.xlsx';
 
-        // start reader
+        // start php reader
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-        $reader->setLoadSheetsOnly($sheetname);
-        
-        $spreadsheet = $reader->load($attached_file);
+        $spreadsheet = $reader->load($local_path);
         $spreadsheet_data = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
         
         $object = $this->convert($spreadsheet_data);
         return $object;
+    
     }
 
     /**
